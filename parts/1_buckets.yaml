@@ -1,0 +1,25 @@
+##############################################################################
+### S3
+
+  DatalakeS3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: {{ DATALAKE }}
+      BucketEncryption: {{ BUCKET_ENCRYPTION }}
+      PublicAccessBlockConfiguration: {{ PUBLIC_ACCESS_BLOCK_CONFIGURATION }}
+      Tags: {{ S3_TAGS }}
+
+  ApplicativeLogS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: {{ APPLICATIVE_LOGS }}
+      BucketEncryption: {{ BUCKET_ENCRYPTION }}
+      PublicAccessBlockConfiguration: {{ PUBLIC_ACCESS_BLOCK_CONFIGURATION }}
+      LifecycleConfiguration:
+        Rules:
+        - Id: DeleteOldFiles
+          ExpirationInDays: {{ LOGS_EXPIRATION_IN_DAYS }}
+          Status: Enabled
+      Tags: {{ S3_TAGS }}
+

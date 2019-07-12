@@ -1,0 +1,98 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Resources:
+
+##############################################################################
+### S3
+
+  DatalakeS3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: test-stage-datalake
+      BucketEncryption: 
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration: 
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags: 
+      - Key: Project
+        Value: test
+      - Key: Owner
+        Value: me
+      - Key: Environment
+        Value: stage
+
+  ApplicativeLogS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: test-stage-applicative-logs
+      BucketEncryption: 
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration: 
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+        - Id: DeleteOldFiles
+          ExpirationInDays: 60
+          Status: Enabled
+      Tags: 
+      - Key: Project
+        Value: test
+      - Key: Owner
+        Value: me
+      - Key: Environment
+        Value: stage
+
+##############################################################################
+### IAM
+
+  S3DatalakeRWPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: "S3DatalakeRW"
+      Description: "RW access to test-stage-datalake bucket"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: "Allow"
+          Action: "s3:ListAllMyBuckets"
+          Resource: "*"
+        - Effect: "Allow"
+          Action: "s3:ListBucket"
+          Resource:
+          - "arn:aws:s3:::test-stage-datalake"
+        - Effect: "Allow"
+          Action: [ "s3:PutObject", "s3:GetObject", "s3:DeleteObject" ]
+          Resource:
+          - "arn:aws:s3:::test-stage-datalake/*"
+
+  S3ApplicativeLogsRWPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: "S3ApplicativeLogsRW"
+      Description: "RW access to test-stage-applicative-logs bucket"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: "Allow"
+          Action: "s3:ListAllMyBuckets"
+          Resource: "*"
+        - Effect: "Allow"
+          Action: "s3:ListBucket"
+          Resource:
+          - "arn:aws:s3:::test-stage-applicative-logs"
+        - Effect: "Allow"
+          Action: [ "s3:PutObject", "s3:GetObject", "s3:DeleteObject" ]
+          Resource:
+          - "arn:aws:s3:::test-stage-applicative-logs/*"
+

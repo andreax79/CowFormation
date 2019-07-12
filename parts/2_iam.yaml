@@ -1,0 +1,43 @@
+##############################################################################
+### IAM
+
+  S3DatalakeRWPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: "S3DatalakeRW"
+      Description: "RW access to {{ DATALAKE }} bucket"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: "Allow"
+          Action: "s3:ListAllMyBuckets"
+          Resource: "*"
+        - Effect: "Allow"
+          Action: "s3:ListBucket"
+          Resource:
+          - "arn:aws:s3:::{{ DATALAKE }}"
+        - Effect: "Allow"
+          Action: [ "s3:PutObject", "s3:GetObject", "s3:DeleteObject" ]
+          Resource:
+          - "arn:aws:s3:::{{ DATALAKE }}/*"
+
+  S3ApplicativeLogsRWPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: "S3ApplicativeLogsRW"
+      Description: "RW access to {{ APPLICATIVE_LOGS }} bucket"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: "Allow"
+          Action: "s3:ListAllMyBuckets"
+          Resource: "*"
+        - Effect: "Allow"
+          Action: "s3:ListBucket"
+          Resource:
+          - "arn:aws:s3:::{{ APPLICATIVE_LOGS }}"
+        - Effect: "Allow"
+          Action: [ "s3:PutObject", "s3:GetObject", "s3:DeleteObject" ]
+          Resource:
+          - "arn:aws:s3:::{{ APPLICATIVE_LOGS }}/*"
+
