@@ -43,8 +43,10 @@ The following variables are require:
 
    ./cow.sh
 
+Links
+-----
 
-[Mo] - Mustache Templates in Bash - https://github.com/tests-always-included/mo
-[Mustache] - Logic-less templates- https://mustache.github.io/
-[ShellCheck], a static analysis tool for shell scripts - https://github.com/koalaman/shellcheck
-[AWS Command Line Interface] - https://aws.amazon.com/cli/
+* Mustache Templates in Bash - https://github.com/tests-always-included/mo
+* Mustache, Logic-less templates- https://mustache.github.io/
+* ShellCheck a static analysis tool for shell scripts - https://github.com/koalaman/shellcheck
+* AWS Command Line Interface-  https://aws.amazon.com/cli/
